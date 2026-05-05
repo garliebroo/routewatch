@@ -1,0 +1,14 @@
+node_modules/
+
+.env
+.next/
+*.log
+Thumbs.db
+.parcel-cache/
+yarn-error.log*
+dist/
+coverage/
+build/
+.cache/
+.env.local
+npm-debug.log*
