@@ -1,24 +1,17 @@
-const { routewatch, resolveRoutePath } = require('./middleware');
-const { record, getStats, reset } = require('./tracker');
-const { printReport, colorMethod, formatBar } = require('./reporter');
-const { startDashboard, buildHtml } = require('./dashboard');
+const { routewatch } = require('./middleware');
+const { getStats, reset, record } = require('./tracker');
+const { printReport } = require('./reporter');
+const { startDashboard } = require('./dashboard');
+const { exportStats, toJSON, toCSV } = require('./exporter');
 
 module.exports = {
-  // Core middleware
   routewatch,
-  resolveRoutePath,
-
-  // Tracker utilities
-  record,
   getStats,
   reset,
-
-  // Reporter utilities
+  record,
   printReport,
-  colorMethod,
-  formatBar,
-
-  // Dashboard
   startDashboard,
-  buildHtml,
+  exportStats,
+  toJSON,
+  toCSV,
 };
