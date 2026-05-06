@@ -1,29 +1,24 @@
-/**
- * Public API for routewatch.
- * Exports the middleware factory and the tracker helpers
- * so consumers can access raw stats programmatically.
- */
-
-const routewatch = require('./middleware');
-const tracker = require('./tracker');
+const { routewatch, resolveRoutePath } = require('./middleware');
+const { record, getStats, reset } = require('./tracker');
+const { printReport, colorMethod, formatBar } = require('./reporter');
+const { startDashboard, buildHtml } = require('./dashboard');
 
 module.exports = {
-  /**
-   * Express middleware factory.
-   * Usage:
-   *   const { routewatch } = require('routewatch');
-   *   app.use(routewatch({ verbose: true }));
-   */
+  // Core middleware
   routewatch,
+  resolveRoutePath,
 
-  /**
-   * Retrieve current route usage stats.
-   * Returns an array sorted by hit count (descending).
-   */
-  getStats: tracker.getStats,
+  // Tracker utilities
+  record,
+  getStats,
+  reset,
 
-  /**
-   * Reset all recorded stats (handy for testing).
-   */
-  reset: tracker.reset,
+  // Reporter utilities
+  printReport,
+  colorMethod,
+  formatBar,
+
+  // Dashboard
+  startDashboard,
+  buildHtml,
 };
