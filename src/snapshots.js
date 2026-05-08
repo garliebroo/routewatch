@@ -31,7 +31,13 @@ function loadSnapshot(filepath) {
     throw new Error(`Snapshot file not found: ${filepath}`);
   }
   const raw = fs.readFileSync(filepath, 'utf8');
-  return JSON.parse(raw);
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (err) {
+    throw new Error(`Failed to parse snapshot at ${filepath}: ${err.message}`);
+  }
+  return parsed;
 }
 
 function listSnapshots(dir = DEFAULT_DIR) {
