@@ -63,6 +63,18 @@ describe('tracker', () => {
       expect(stats[0].lastHit).toBeGreaterThanOrEqual(before);
       expect(stats[0].lastHit).toBeLessThanOrEqual(after);
     });
+
+    it('updates lastHit timestamp on each call', () => {
+      record('GET', '/api/users', 200, 30);
+      const firstHit = getStats()[0].lastHit;
+
+      // small delay to ensure timestamps differ
+      return new Promise((resolve) => setTimeout(resolve, 5)).then(() => {
+        record('GET', '/api/users', 200, 30);
+        const secondHit = getStats()[0].lastHit;
+        expect(secondHit).toBeGreaterThan(firstHit);
+      });
+    });
   });
 
   describe('getStats', () => {
