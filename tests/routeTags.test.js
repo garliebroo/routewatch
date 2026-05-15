@@ -1,4 +1,4 @@
-const { setTag, setTags, getTag, getAllTags, removeTag, findByTag, reset } = require('../src/routeTags');
+const { setTag, setTags, getTag, getAllTags, removeTag, findByTag, findByTags, reset } = require('../src/routeTags');
 
 beforeEach(() => reset());
 
@@ -69,6 +69,26 @@ describe('findByTag', () => {
   it('returns empty array when no match', () => {
     setTag('GET', '/x', ['foo']);
     expect(findByTag('bar')).toEqual([]);
+  });
+});
+
+describe('findByTags', () => {
+  it('returns routes matching all provided tags', () => {
+    setTag('GET', '/users', ['auth', 'admin']);
+    setTag('POST', '/posts', ['auth']);
+    setTag('GET', '/public', ['open']);
+    const results = findByTags(['auth', 'admin']);
+    expect(results).toHaveLength(1);
+    expect(results[0].tags).toEqual(['auth', 'admin']);
+  });
+
+  it('returns empty array when no route matches all tags', () => {
+    setTag('GET', '/x', ['foo', 'bar']);
+    expect(findByTags(['foo', 'baz'])).toEqual([]);
+  });
+
+  it('returns empty array when no routes are registered', () => {
+    expect(findByTags(['auth'])).toEqual([]);
   });
 });
 
