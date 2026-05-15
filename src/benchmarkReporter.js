@@ -23,6 +23,26 @@ function formatBenchmarkRow(result) {
   return `  ${method} ${route} threshold: ${threshold} avg: ${avg} delta: ${paddedDelta} [${status}]`;
 }
 
+/**
+ * Prints only the routes that failed their benchmark threshold.
+ * Useful for CI output where you only want to surface regressions.
+ */
+function printFailedBenchmarks(stats) {
+  const results = runBenchmarkReport(stats);
+  const failed = results.filter(r => !r.passed);
+
+  if (failed.length === 0) {
+    console.log('\n\x1b[32mAll benchmarks passed.\x1b[0m\n');
+    return;
+  }
+
+  console.log('\n\x1b[1m=== Failed Benchmarks ===\x1b[0m');
+  for (const result of failed) {
+    console.log(formatBenchmarkRow(result));
+  }
+  console.log(`\n  ${failed.length} route(s) exceeded threshold.\n`);
+}
+
 function printBenchmarkReport(stats) {
   const results = runBenchmarkReport(stats);
 
@@ -41,4 +61,4 @@ function printBenchmarkReport(stats) {
   console.log(`\n  Total: ${results.length}  \x1b[32mPassed: ${passed}\x1b[0m  \x1b[31mFailed: ${failed}\x1b[0m\n`);
 }
 
-module.exports = { formatBenchmarkRow, printBenchmarkReport };
+module.exports = { formatBenchmarkRow, printBenchmarkReport, printFailedBenchmarks };
