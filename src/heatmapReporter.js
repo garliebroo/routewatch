@@ -20,6 +20,16 @@ function toBlock(count, max) {
 }
 
 /**
+ * Format a peak hour result into a display string.
+ * @param {string} route
+ * @returns {string}
+ */
+function formatPeak(route) {
+  const { hour, count } = peakHour(route);
+  return count > 0 ? `${String(hour).padStart(2, '0')}h (${count})` : 'n/a';
+}
+
+/**
  * Print a full heatmap report to console.
  */
 function printHeatmapReport() {
@@ -43,9 +53,7 @@ function printHeatmapReport() {
     const slots = data[route];
     const max = Math.max(...slots);
     const blocks = slots.map(c => toBlock(c, max)).join(' ');
-    const { hour, count } = peakHour(route);
-    const peakStr = count > 0 ? `${String(hour).padStart(2, '0')}h (${count})` : 'n/a';
-    console.log(`${route.padEnd(30)} ${blocks}  ${peakStr}`);
+    console.log(`${route.padEnd(30)} ${blocks}  ${formatPeak(route)}`);
   });
 
   console.log('');
